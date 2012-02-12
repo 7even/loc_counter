@@ -1,0 +1,1 @@
+require 'loc_counter'

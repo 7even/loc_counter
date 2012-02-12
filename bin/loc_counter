@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require 'thor'
+
+module LOCCounter
+  class CLI < Thor
+    include Thor::Actions
+  end
+end
+
+LOCCounter::CLI.start
