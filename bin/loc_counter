@@ -1,10 +1,28 @@
 #!/usr/bin/env ruby
 require 'rubygems'
-require 'thor'
+require 'thor/group'
+require 'loc_counter'
 
 module LOCCounter
-  class CLI < Thor
+  class CLI < Thor::Group
     include Thor::Actions
+    
+    desc 'Scans the project for Ruby source files and outputs LOC counts.'
+    argument :path, :type => :string, :desc => 'Full path to the project directory'
+    def project
+      say("If #{path} is a project, we can scan only app, config and lib directories; otherwise every .rb file will be scanned.")
+      
+      if yes?("#{path} is a project?", :green)
+        counts = LOCCounter::Project.new(path).counts
+        print_table(counts)
+      else
+        say('Sorry, non-project mode still in development :)', :red)
+      end
+    end
+    
+    def self.banner
+      'loc_counter PATH'
+    end
   end
 end
 
