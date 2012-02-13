@@ -26,25 +26,27 @@ module LOCCounter
     # - :code is a number of lines containing any code
     # @return [Hash]
     def counts
-      counts = {
-        :total    => @lines.count,
-        :empty    => 0,
-        :comments => 0,
-        :code     => 0
-      }
-      
-      @lines.each do |line|
-        case line
-        when EMPTY_PATTERN
-          counts[:empty] += 1
-        when COMMENT_PATTERN
-          counts[:comments] += 1
-        else
-          counts[:code] += 1
+      @counts ||= begin
+        counts = {
+          :total    => @lines.count,
+          :empty    => 0,
+          :comments => 0,
+          :code     => 0
+        }
+        
+        @lines.each do |line|
+          case line
+          when EMPTY_PATTERN
+            counts[:empty] += 1
+          when COMMENT_PATTERN
+            counts[:comments] += 1
+          else
+            counts[:code] += 1
+          end
         end
+        
+        counts
       end
-      
-      counts
     end
   end
 end
