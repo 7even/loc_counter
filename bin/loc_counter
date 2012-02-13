@@ -1,27 +1,55 @@
 #!/usr/bin/env ruby
 require 'rubygems'
 require 'thor/group'
+require 'active_support/inflector'
 require 'loc_counter'
 
 module LOCCounter
   class CLI < Thor::Group
     include Thor::Actions
     
-    desc 'Scans the project for Ruby source files and outputs LOC counts.'
-    argument :path, :type => :string, :desc => 'Full path to the project directory'
+    desc 'Scans the project or individual files for Ruby source files and outputs LOC counts.'
+    argument :paths, :type => :array
     def project
-      say("If #{path} is a project, we can scan only app, config and lib directories; otherwise every .rb file will be scanned.")
-      
-      if yes?("#{path} is a project?", :green)
-        counts = LOCCounter::Project.new(path).counts
-        print_table(counts)
+      case paths.count
+      when 0
+        say 'No path was given'
+      when 1
+        # one dir/file to process
+        path = paths.first
+        if File.directory?(path)
+          counts = LOCCounter::Project.new(path).counts
+          print_results(counts)
+        else
+          # file
+          say('Sorry, non-project mode still in development :)', :red)
+        end
       else
+        # many files to process
         say('Sorry, non-project mode still in development :)', :red)
       end
     end
     
     def self.banner
-      'loc_counter PATH'
+        "loc_counter /path/to/project             # scan the whole project\n" + 
+      "    or\n" + 
+      "  loc_counter /some/filename/mask/**/*.rb  # scan only specified files"
+    end
+  private
+    def print_results(counts)
+      say pluralized_noun(counts.delete(:files), 'file') + ' processed'
+      
+      results = counts.map do |type, count|
+        type  = type.to_s.capitalize
+        count = pluralized_noun(count, 'line')
+        [type, count]
+      end
+      
+      print_table(results)
+    end
+    
+    def pluralized_noun(number, noun)
+      "#{number} #{noun.pluralize(number)}"
     end
   end
 end

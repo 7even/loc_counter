@@ -1,3 +1,4 @@
+require 'active_support/ordered_hash'
 module LOCCounter
   # A class representing a project.
   class Project
@@ -27,15 +28,11 @@ module LOCCounter
     #   #     :code => 954,
     #   #    :files => 43
     #   # }
-    # @return [Hash]
+    # @return [ActiveSupport::OrderedHash]
     # @see LOCCounter::SourceFile#counts
     def counts
-      total_counts = {
-        :total    => 0,
-        :empty    => 0,
-        :comments => 0,
-        :code     => 0
-      }
+      total_counts = ActiveSupport::OrderedHash.new
+      [:total, :empty, :comments, :code].each { |type| total_counts[type] = 0 }
       
       @files.each do |file|
         total_counts.keys.each do |type|

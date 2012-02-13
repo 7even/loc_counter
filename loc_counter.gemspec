@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib']
   
   s.add_runtime_dependency 'thor'
+  s.add_runtime_dependency 'activesupport', '~> 3.0'
   
   s.add_development_dependency 'rake'
   s.add_development_dependency 'pry'
