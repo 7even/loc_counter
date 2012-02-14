@@ -1,4 +1,4 @@
-# loc_counter
+# loc_counter [![Build Status](https://secure.travis-ci.org/7even/loc_counter.png)](http://travis-ci.org/7even/loc_counter)
 
 `loc_counter` is a command-line tool for measuring LOC (line-of-code) count in your Ruby project or some set of arbitrary Ruby source files.
 
