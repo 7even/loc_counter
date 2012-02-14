@@ -7,9 +7,10 @@ Gem::Specification.new do |s|
   s.version     = LOCCounter::VERSION
   s.authors     = ['Vsevolod Romashov']
   s.email       = ['7@7vn.ru']
-  s.homepage    = ''
+  s.homepage    = 'https://github.com/7even/loc_counter'
   s.summary     = 'CLI LOC counter for a Ruby project'
   s.description = 'A simple line-of-code counter for Ruby projects'
+  s.licenses    = ['MIT']
   
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")

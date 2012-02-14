@@ -18,8 +18,8 @@ module LOCCounter
     
     # Summarized line counts for all files in the collection.
     # @example
-    #   project = LOCCounter::Project.new(path)
-    #   project.counts
+    #   collection = LOCCounter::FilesCollection.new(paths)
+    #   collection.counts
     #   # => {
     #   #    :total => 1606,
     #   #    :empty => 292,
