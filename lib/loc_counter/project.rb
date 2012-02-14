@@ -10,6 +10,7 @@ module LOCCounter
     SOURCE_FILES = [
       '*.{rb,gemspec}',
       '{Cap,Gem,Rake}file',
+      'bin/*',
       '{app,config,lib}/**/*.{gemspec,rake,rb}'
     ]
     

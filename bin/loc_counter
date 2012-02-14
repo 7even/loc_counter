@@ -17,12 +17,15 @@ module LOCCounter
       when 1
         # one dir/file to process
         path = paths.first
+        
         if File.directory?(path)
           counts = LOCCounter::Project.new(path).counts
           print_results(counts)
         else
           # file
-          say('Sorry, non-project mode still in development :)', :red)
+          counts = LOCCounter::SourceFile.new(path).counts
+          counts.update(:files => 1)
+          print_results(counts)
         end
       else
         # many files to process
@@ -37,6 +40,7 @@ module LOCCounter
     end
   private
     def print_results(counts)
+      # '46 files processed'
       say pluralized_noun(counts.delete(:files), 'file') + ' processed'
       
       results = counts.map do |type, count|
@@ -48,6 +52,7 @@ module LOCCounter
       print_table(results)
     end
     
+    # pluralized_noun(53, 'octopus') # => '53 octopi'
     def pluralized_noun(number, noun)
       "#{number} #{noun.pluralize(number)}"
     end
