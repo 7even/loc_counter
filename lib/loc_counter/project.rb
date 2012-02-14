@@ -6,15 +6,25 @@ module LOCCounter
     # @return [Array]
     attr_reader :files
     
-    # A Dir.glob pattern for project source code files paths
-    SOURCE_FILES = '{app,config,lib}/**/*.rb'
+    # Dir.glob patterns for project source code files paths
+    SOURCE_FILES = [
+      '*.{rb,gemspec}',
+      '{Cap,Gem,Rake}file',
+      '{app,config,lib}/**/*.{gemspec,rake,rb}'
+    ]
     
     # @param [String] dir_name Path to the project directory
     def initialize(dir_name)
       raise ArgumentError, "Directory '#{dir_name}' not found" unless File.exists?(dir_name)
       
-      pattern = File.join(dir_name, SOURCE_FILES)
-      @files = Dir[pattern].map { |filename| SourceFile.new(filename) }
+      @files = []
+      SOURCE_FILES.each do |pattern|
+        full_pattern = File.join(dir_name, pattern)
+        
+        @files += Dir.glob(full_pattern).map do |filename|
+          SourceFile.new(filename)
+        end
+      end
     end
     
     # Summarized line counts for all files in a project.

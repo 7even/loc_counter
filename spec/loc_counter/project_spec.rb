@@ -32,13 +32,13 @@ describe LOCCounter::Project do
     context "with an existing directory" do
       before(:each) do
         File.stub(:exists?).and_return(true)
-        Dir.stub(:[]).and_return(@filenames)
+        Dir.stub(:glob).and_return(@filenames)
       end
       
-      it "puts the files list from Dir[] to @files" do
-        Dir.should_receive(:[]).with(@dir_path + '/' + LOCCounter::Project::SOURCE_FILES)
+      it "puts the files list from Dir.glob to @files" do
+        Dir.should_receive(:glob).with(@dir_path + '/' + LOCCounter::Project::SOURCE_FILES.first)
         project = LOCCounter::Project.new(@dir_path)
-        project.files.should == [@file1, @file2]
+        project.files.should == [@file1, @file2] * LOCCounter::Project::SOURCE_FILES.count
       end
     end
   end
