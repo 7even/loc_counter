@@ -11,25 +11,15 @@ module LOCCounter
     desc 'Scans the project or individual files for Ruby source files and outputs LOC counts.'
     argument :paths, :type => :array
     def project
-      case paths.count
-      when 0
+      if paths.empty?
+        # no arguments received
         say 'No path was given'
-      when 1
-        # one dir/file to process
-        path = paths.first
-        
-        if File.directory?(path)
-          counts = LOCCounter::Project.new(path).counts
-          print_results(counts)
-        else
-          # file
-          counts = LOCCounter::SourceFile.new(path).counts
-          counts.update(:files => 1)
-          print_results(counts)
-        end
+      elsif paths.count == 1 && File.directory?(paths.first)
+        # received one argument which is a directory path
+        print_results LOCCounter::Project.new(paths.first).counts
       else
-        # many files to process
-        say('Sorry, non-project mode still in development :)', :red)
+        # received one or more file paths
+        print_results LOCCounter::FilesCollection.new(paths).counts
       end
     end
     

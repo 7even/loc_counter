@@ -1,7 +1,7 @@
 module LOCCounter
   # A class representing a source code file.
   class SourceFile
-    # All lines in a file
+    # All lines in a file.
     # @return [Array]
     attr_reader :lines
     
