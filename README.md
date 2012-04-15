@@ -10,7 +10,7 @@ gem install loc_counter
 
 ## Usage
 
-The gem install a single executable `loc_counter`.
+The gem installs a single executable `loc_counter`.
 
 ### On a project
 
